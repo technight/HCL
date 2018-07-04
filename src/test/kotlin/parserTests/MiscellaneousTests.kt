@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 import parser.Parser
-import parser.cpp.CppParser
-import kotlin.test.assertTrue
 
 class MiscellaneousTests {
 
@@ -30,18 +28,6 @@ class MiscellaneousTests {
             bool.identifier("myId").`=`.number(5.0).newLine
         })
         Assertions.assertThrows(UnexpectedTypeError::class.java) { Parser(lexer).commandSequence().toList() }
-    }
-    @Test
-    fun canParseLoop() {
-        val ast = CppParser(DummyLexer(buildTokenSequence {
-            `{`.text("HEY").identifier("print").`}`.identifier("loop").newLine
-        })).cppAst()
-
-        val funcCall = ("loop" returning (none)).calledWith(lambda() andBody body(
-            "print" returning none calledWith txt("HEY")))
-        assertTrue { ast.children.any {
-            it == funcCall
-        } }
     }
 
     @Test
