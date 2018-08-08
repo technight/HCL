@@ -6,13 +6,13 @@ class TypeChecker : ITypeChecker {
     override fun List<AstNode.Type.Func>.getTypeDeclaration(types: List<AstNode.Type>): AstNode.Type.Func? {
         val genericTypes = mutableMapOf<String, AstNode.Type>()
 
-        return this.firstOrNull {
+        return (this.firstOrNull {
             it.paramTypes.zip(types).all {
                 if (it.first == it.second) {
                     true
                 } else it.matchGenerics(genericTypes)
             }
-        }
+        })
     }
 
     private fun AstNode.Type.fillGenerics(genericCouples: List<Pair<AstNode.Type, AstNode.Type>>): AstNode.Type =
@@ -81,7 +81,7 @@ class TypeChecker : ITypeChecker {
                         declaredType.paramTypes.count() == argumentType.paramTypes.count())
                     Pair(declaredType.returnType, argumentType.returnType).matchGenerics(genericTypes) &&
                             declaredType.paramTypes.zip(argumentType.paramTypes).all { it.matchGenerics(genericTypes) }
-                else false
+                else (argumentType is AstNode.Type.Func && argumentType.paramTypes.isEmpty())
 
             is AstNode.Type.Tuple ->
                 if (argumentType is AstNode.Type.Tuple &&
