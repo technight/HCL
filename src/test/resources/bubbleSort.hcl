@@ -14,7 +14,7 @@ var bubbleSort = (list[num] lst): list[num] {
     {
         num j
         {
-            (lst at j) greaterThan (lst at (j  + 1)) then {
+            (lst at j) greaterThan (lst at (j  + 1)) thenDo {
                 lst = lst swapAtIndex j (j  + 1)
             }
 

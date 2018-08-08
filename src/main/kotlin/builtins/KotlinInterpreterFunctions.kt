@@ -31,7 +31,7 @@ object KotlinInterpreterFunctions {
 
                     buildNotFunction(),
                     // Control structures
-                    buildThenFunction(),
+                    buildThenDoFunction(),
                     // buildElseTernaryFunction(),
                     buildWhileFunction(),
                     buildEachFunction(),
@@ -391,8 +391,8 @@ private fun buildWhileFunction() = buildKotlinFunction(
         }
 )
 
-private fun buildThenFunction() = buildKotlinFunction(
-        identifier = "then",
+private fun buildThenDoFunction() = buildKotlinFunction(
+        identifier = "thenDo",
         parameters = listOf(
                 Parameter("KT_condition", AstNode.Type.Bool),
                 Parameter("KT_body", AstNode.Type.Func(listOf(), AstNode.Type.None))
