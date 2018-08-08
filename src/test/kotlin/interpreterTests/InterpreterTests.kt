@@ -26,6 +26,7 @@ object TestHclPrograms : Spek({
             "fizzBuzz.hcl",
             "MapFilter.hcl",
             "staticScope.hcl",
+            "match.hcl",
             "subText.hcl",
             "toUneven.hcl",
             "multiScope.hcl",

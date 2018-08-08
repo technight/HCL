@@ -69,7 +69,8 @@ object KotlinInterpreterFunctions {
 
                     buildInputFunction(),
                     buildTextToNumberFunction(),
-                    buildToTypeFunction()
+                    buildToTypeFunction(),
+                    buildMatchFunction()
             )
 }
 
@@ -557,6 +558,28 @@ private fun buildPrintFunctionText() = buildKotlinFunction(
         body = {
             println(it.first())
             KotlinUnit
+        }
+)
+
+private fun buildMatchFunction() = buildKotlinFunction(
+        identifier = "match",
+        parameters = listOf(
+                Parameter("KT_element", AstNode.Type.GenericType("T")),
+                Parameter("KT_cases", AstNode.Type.List(
+                    AstNode.Type.Tuple(listOf(
+                            AstNode.Type.GenericType("T"),
+                        AstNode.Type.Func(
+                                listOf(AstNode.Type.GenericType("T")),
+                                AstNode.Type.GenericType("T2")
+                        )
+                    )
+                )))
+        ),
+        returnType = AstNode.Type.GenericType("T2"),
+        body = { parameters ->
+            val elementToMatch = parameters[0]
+            val cases = (parameters[1] as KotlinList).value.map { tpl -> tpl as KotlinTuple }
+            (cases.first { it.value[0] == elementToMatch }.value[1] as KotlinLambdaExpression).invoke(listOf(elementToMatch))
         }
 )
 

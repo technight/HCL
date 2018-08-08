@@ -15,7 +15,7 @@ var in = (T element, list[T] myList): bool {
 	myList any { value equals element }
 }
 
-var notIn = (T element, list[T] myList):bool{
+var notIn = (T element, list[T] myList): bool{
 	element in myList not
 }
 
