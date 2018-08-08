@@ -455,7 +455,9 @@ open class Parser(val lexer: ILexer) : IParser, ITypeChecker by TypeChecker(), I
                     mutableListOf<AstNode.Command.Expression>().apply {
                         accept<Token.SpecialChar.ParenthesesStart>()
                         while (current.token != Token.SpecialChar.ParenthesesEnd) {
+                            flushNewLine(false)
                             add(parseExpression())
+                            flushNewLine(false)
                             if (!tryAccept<Token.SpecialChar.ListSeparator>()) break
                         }
                         accept<Token.SpecialChar.ParenthesesEnd>()
@@ -468,11 +470,13 @@ open class Parser(val lexer: ILexer) : IParser, ITypeChecker by TypeChecker(), I
                 mutableListOf<AstNode.Command.Expression>().apply {
                     accept<Token.SpecialChar.SquareBracketStart>()
                     while (current.token != Token.SpecialChar.SquareBracketEnd) {
+                        flushNewLine(false)
                         add(parseExpression())
                         if (inputType == AstNode.Type.None)
                             inputType = last().type
                         if (last().type != inputType)
                             unexpectedTypeError(inputType::class.simpleName!!, last().type::class.simpleName!!)
+                        flushNewLine(false)
                         if (!tryAccept<Token.SpecialChar.ListSeparator>()) break
                     }
                     accept<Token.SpecialChar.SquareBracketEnd>()
