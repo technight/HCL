@@ -70,7 +70,8 @@ object KotlinInterpreterFunctions {
                     buildInputFunction(),
                     buildTextToNumberFunction(),
                     buildToTypeFunction(),
-                    buildMatchFunction()
+                    buildMatchFunction(),
+                    buildMatchExpressionFunction()
             )
 }
 
@@ -564,12 +565,12 @@ private fun buildPrintFunctionText() = buildKotlinFunction(
 private fun buildMatchFunction() = buildKotlinFunction(
         identifier = "match",
         parameters = listOf(
-                Parameter("KT_element", AstNode.Type.GenericType("T")),
+                Parameter("KT_element", AstNode.Type.GenericType("T1")),
                 Parameter("KT_cases", AstNode.Type.List(
                     AstNode.Type.Tuple(listOf(
-                            AstNode.Type.GenericType("T"),
+                            AstNode.Type.GenericType("T1"),
                         AstNode.Type.Func(
-                                listOf(AstNode.Type.GenericType("T")),
+                                listOf(AstNode.Type.GenericType("T1")),
                                 AstNode.Type.GenericType("T2")
                         )
                     )
@@ -580,6 +581,30 @@ private fun buildMatchFunction() = buildKotlinFunction(
             val elementToMatch = parameters[0]
             val cases = (parameters[1] as KotlinList).value.map { tpl -> tpl as KotlinTuple }
             (cases.first { it.value[0] == elementToMatch }.value[1] as KotlinLambdaExpression).invoke(listOf(elementToMatch))
+        }
+)
+
+private fun buildMatchExpressionFunction() = buildKotlinFunction(
+        identifier = "match",
+        parameters = listOf(
+                Parameter("KT_element", AstNode.Type.GenericType("T1")),
+                Parameter("KT_cases", AstNode.Type.List(
+                        AstNode.Type.Tuple(listOf(
+                                AstNode.Type.Func(listOf(AstNode.Type.GenericType("T1")), AstNode.Type.Bool),
+                                AstNode.Type.Func(
+                                        listOf(AstNode.Type.GenericType("T1")),
+                                        AstNode.Type.GenericType("T2")
+                                )
+                        )
+                        )))
+        ),
+        returnType = AstNode.Type.GenericType("T2"),
+        body = { parameters ->
+            val elementToMatch = parameters[0]
+            val cases = (parameters[1] as KotlinList).value.map { tpl -> tpl as KotlinTuple }
+            (cases.first {
+                ((it.value[0] as KotlinLambdaExpression).invoke(listOf(elementToMatch)) as KotlinBoolean).value
+            }.value[1] as KotlinLambdaExpression).invoke(listOf(elementToMatch))
         }
 )
 
