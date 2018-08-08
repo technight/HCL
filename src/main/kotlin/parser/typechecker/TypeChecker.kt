@@ -9,8 +9,6 @@ class TypeChecker : ITypeChecker {
         return this.firstOrNull {
             it.paramTypes.zip(types).all {
                 if (it.first == it.second) {
-                    // if (it.first is AstNode.Type.GenericType)
-                    //    TODO("throw ambiguous type error")
                     true
                 } else it.matchGenerics(genericTypes)
             }
@@ -19,8 +17,7 @@ class TypeChecker : ITypeChecker {
 
     private fun AstNode.Type.fillGenerics(genericCouples: List<Pair<AstNode.Type, AstNode.Type>>): AstNode.Type =
             when (this) {
-        is AstNode.Type.GenericType -> genericCouples.getTypeFromGenericType(name)
-                ?: error("Unable to infer generic type $name")
+        is AstNode.Type.GenericType -> genericCouples.getTypeFromGenericType(name) ?: this
         is AstNode.Type.List -> AstNode.Type.List(elementType.fillGenerics(genericCouples))
         is AstNode.Type.Func -> AstNode.Type.Func(paramTypes.map { it.fillGenerics(genericCouples) },
                 returnType.fillGenerics(genericCouples))
