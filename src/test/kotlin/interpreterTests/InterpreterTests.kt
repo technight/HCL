@@ -35,6 +35,7 @@ object TestHclPrograms : Spek({
             "PrintFibonacci.hcl",
             "Swap.hcl",
             "bubbleSort.hcl",
+            "then.hcl",
             "testFirstIndexWhereStdlib.hcl",
             "conclusionExampleNicolaj.hcl",
             "aTupleInFunction.hcl",

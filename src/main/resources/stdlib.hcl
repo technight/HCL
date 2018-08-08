@@ -1,6 +1,10 @@
 # Alternative to function "@"
 var @ = (list[T] lst, num idx): T { lst at idx }
 
+# alternative to default stuff
+var True = true
+var False = false
+
 # Returns whether a predicate applies to any element in list
 var any = (list[T] myList, func[T, bool] compareFunc): bool{
 	myList where { value compareFunc } length greaterThan 0
@@ -23,8 +27,18 @@ var then = (bool b, func[T] s) : tuple[bool,T] {
     (b,s)
 }
 
+var then = (bool b, func[none] s) : bool {
+    b thenDo { s }
+    b
+}
+
 var else = (tuple[bool,T] i, func[T] s) : T {
     i element0 thenElse { (i element1) } { s }
+}
+
+var else = (bool b, func[none] s) : bool {
+    b not thenDo { s }
+    b
 }
 
 # Get first index where predicate applies
@@ -33,7 +47,8 @@ func firstIndexWhere = (list[T] lst, func[T, bool] predicate): num {
     var ret = -1
     var idx = 0
     lst forEach {
-        value predicate and (ret equals -1) then { ret = idx }
+        value predicate and (ret equals -1) thenDo { ret = idx }
+
         idx = idx + 1
     }
     return ret

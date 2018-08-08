@@ -2,9 +2,9 @@
 
 var fizzbuzz = (num v): txt {
     txt toPrint
-	(v mod 3 equals 0) then { toPrint = toPrint + "fizz" }
-	(v mod 5 equals 0) then { toPrint = toPrint + "buzz" }
-    toPrint equals "" then { toPrint = v toText }
+	(v mod 3 equals 0) thenDo { toPrint = toPrint + "fizz" }
+	(v mod 5 equals 0) thenDo { toPrint = toPrint + "buzz" }
+    toPrint equals "" thenDo { toPrint = v toText }
     return toPrint
 
 

@@ -5,8 +5,8 @@ var generateBraceMap = (txt code): list[tuple[num, num]] {
     var codeLength = code length
     {
         var currentChar = code at codeIdx
-        currentChar is "[" then { braceStack = braceStack + [codeIdx] }
-        currentChar is "]" then {
+        currentChar is "[" thenDo { braceStack = braceStack + [codeIdx] }
+        currentChar is "]" thenDo {
             var newContent = (braceStack withoutLast, braceStack @ (braceStack length - 1))
             braceStack = newContent element0
             var gotoIdx = newContent element1
@@ -22,7 +22,7 @@ var valueOfIdx = (list[tuple[num, num]] braceMap, num from): num {
     var res = -1
     braceMap forEach {
         var cond = value element0 is from
-        cond then { res = value element1 }
+        cond thenDo { res = value element1 }
     }
     return res
 }
@@ -40,16 +40,16 @@ var result = ""
 {
     var command = code at codePtr
 
-    command equals ">" then {
+    command equals ">" thenDo {
         cellPtr = cellPtr + 1
-        cells length equals cellPtr then { cells = cells + [0] }
+        cells length equals cellPtr thenDo { cells = cells + [0] }
     }
-    command is "<" then { cellPtr = cellPtr is 0 thenElse { 0 } { cellPtr - 1 } }
-    command is "+" then { cells = cells changeIdx cellPtr (cells @ cellPtr is 255 thenElse { 255 } { cells @ cellPtr + 1 }) }
-    command is "-" then { cells = cells changeIdx cellPtr (cells @ cellPtr is 0 thenElse { 0 } { cells @ cellPtr - 1 }) }
-    command is "[" and (cells @ cellPtr is 0) then { codePtr = braceMap valueOfIdx codePtr }
-    command is "]" and (cells @ cellPtr isNot 0) then { codePtr = braceMap valueOfIdx codePtr }
-    command is "." then { result = result + (cells @ cellPtr toChar) }
+    command is "<" thenDo { cellPtr = cellPtr is 0 thenElse { 0 } { cellPtr - 1 } }
+    command is "+" thenDo { cells = cells changeIdx cellPtr (cells @ cellPtr is 255 thenElse { 255 } { cells @ cellPtr + 1 }) }
+    command is "-" thenDo { cells = cells changeIdx cellPtr (cells @ cellPtr is 0 thenElse { 0 } { cells @ cellPtr - 1 }) }
+    command is "[" and (cells @ cellPtr is 0) thenDo { codePtr = braceMap valueOfIdx codePtr }
+    command is "]" and (cells @ cellPtr isNot 0) thenDo { codePtr = braceMap valueOfIdx codePtr }
+    command is "." thenDo { result = result + (cells @ cellPtr toChar) }
 
     codePtr = codePtr + 1
 } while { codePtr lessThan codeLen }
