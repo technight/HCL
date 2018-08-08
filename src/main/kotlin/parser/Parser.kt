@@ -409,9 +409,8 @@ open class Parser(val lexer: ILexer) : IParser, ITypeChecker by TypeChecker(), I
 
                     retrieveSymbol(token.value).handle(
                         {
-                            if (it.any { it.containsGeneric() })
-                                genericPassedFunctionException()
-                            AstIdentifier(token.value, it.first()) // TODO probably shouldn't always be first
+                            if (it.size == 1) AstIdentifier(token.value, it.first())
+                            else overloadedPassedFunctionException()
                         },
                         { identifierIsNotFunctionError(token.value) },
                         { undeclaredError(token) }

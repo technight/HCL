@@ -130,22 +130,6 @@ class GenericsTests {
     }
 
     @Test
-    fun failOnPassedFunctionWithGenerics() {
-        val lexer = DummyLexer(buildTokenSequence {
-            func.squareStart.func.squareStart.number.squareEnd.`,`.number.squareEnd.identifier("myFunc").`=`.`(`.func
-                    .squareStart.number.squareEnd.identifier("passFunc").`)`.colon.number.`{`.number(2.0).identifier("passFunc").`}`.newLine
-                    .func.squareStart.identifier("T").`,`.identifier("T").squareEnd.identifier("passFunc").`=`.`(`.identifier("T")
-                    .identifier("value").`)`.colon.identifier("T").`{`.identifier("value").`}`.newLine
-
-                    .number.identifier("x").`=`.colon.identifier("passFunc").identifier("myFunc").newLine
-        })
-
-        Assertions.assertThrows(GenericPassedFunctionException::class.java) {
-            Parser(lexer).commandSequence().toList()
-        }
-    }
-
-    @Test
     fun failOnCallDifferentTypesInArgs() {
         val lexer = DummyLexer(buildTokenSequence {
             func.squareStart.identifier("T").`,`.identifier("T").`,`.identifier("T").squareEnd.identifier("myFunc").`=`

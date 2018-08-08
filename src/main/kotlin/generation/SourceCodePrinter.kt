@@ -16,7 +16,6 @@ class SourceCodePrinter : IPrinter {
         is Command.Assignment -> format()
         is Command.Declaration -> format()
         is Command.Expression -> format()
-        is Command.RawCpp -> "Raw cppName: \"${this.content}\""
         is Command.KotlinFunction -> "Kotlin call"
         is Command.Return -> "return ${expression.format()}"
     }

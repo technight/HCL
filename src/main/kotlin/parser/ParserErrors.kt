@@ -72,8 +72,8 @@ fun Parser.initializedFunctionParameterError(): Nothing {
             setInputLine())
 }
 
-fun Parser.genericPassedFunctionException(): Nothing {
-    throw GenericPassedFunctionException(setLineNumber(), fileName, setLineIndex(1),
+fun Parser.overloadedPassedFunctionException(): Nothing {
+    throw OverloadedPassedFunctionException(setLineNumber(), fileName, setLineIndex(1),
             setInputLine())
 }
 

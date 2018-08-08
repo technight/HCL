@@ -19,7 +19,6 @@ sealed class AstNode {
 
         sealed class Expression : Command() {
             val type: Type get() = when (this) {
-
                 is AstNode.Command.Expression.Value.Identifier -> this.innerType
                 is AstNode.Command.Expression.Value.Literal.Number -> Type.Number
                 is AstNode.Command.Expression.Value.Literal.Text -> Type.Text
@@ -64,7 +63,6 @@ sealed class AstNode {
             ) : Expression()
         }
         data class Return(val expression: Expression) : Command()
-        data class RawCpp(val content: String) : Command()
         data class KotlinFunction(val func: KtInterpreter.(List<KotlinHclExpression>) -> KotlinHclExpression) : Command()
     }
     sealed class Type : AstNode() {
