@@ -21,7 +21,7 @@ class REPL {
             "var", "map", "where", "equals", "value", "at", "element0", "element1", "mod", "toText", "length",
             "and", "or", "then", "thenElse", "greaterThan", "lessThan", "notEquals", "greaterThanEqual", "lessThanEqual",
             "print", "splitAt", "to", "while", "in", "all", "any", "forEach", "firstIndexWhere", "notIn",
-            "num", "txt", "bool", "list", "tpl", "input", "toNum", "type"
+            "num", "txt", "bool", "list", "tpl", "input", "toNum", "type", "match"
     )
     private val reader = LineReaderBuilder.builder()
             .completer(StringsCompleter(completions))
@@ -29,8 +29,9 @@ class REPL {
             .build()
     private val previousContent = mutableListOf<String>()
 
-    private fun readLine() = try {
-        reader.readLine(">>> ")
+    private fun readLine(): String = try {
+        val line = reader.readLine(">>> ")
+        line.replace('\\', '\n') + if (line.endsWith("\\")) readLine() else ""
     } catch (cancel: UserInterruptException) {
         println("Quit!")
         exitProcess(0)
