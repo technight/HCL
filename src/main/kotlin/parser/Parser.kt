@@ -258,12 +258,12 @@ open class Parser(val lexer: ILexer) : IParser, ITypeChecker by TypeChecker(), I
             commands.add(parseCommand())
         }
         val body = AstNode.Command.Expression.LambdaBody(
-                if (commands.size == 1 &&
-                    (commands[0] as? AstNode.Command.Expression)?.let { it.type != AstNode.Type.None } == true)
-                    listOf(AstNode.Command.Return(commands[0] as AstNode.Command.Expression))
+                if (commands.size == 0 || commands.last() !is AstNode.Command.Expression)
+                    commands //listOf(AstNode.Command.Return(commands[0] as AstNode.Command.Expression))
                 else
-                    commands
+                    commands.subList(0,commands.count()-1) + listOf(AstNode.Command.Return(commands.last() as AstNode.Command.Expression))
         )
+
         val ret = LambdaBodyWithType(body, body.type)
         closeScope()
         flushNewLine(false)

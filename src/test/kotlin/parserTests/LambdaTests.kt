@@ -79,14 +79,18 @@ class LambdaTests {
     }
 
     @Test
-    fun implicitReturnDoesNotWorksOnMoreExpressions() {
-        val exception = parseExpectException("" +
-                "var f = (): num { \n" +
+    fun implicitReturnWorksOnMoreExpressions() {
+
+        "var f = (): num { \n" +
                 "   var z = 5 \n" +
                 "   z\n" +
-                "}"
-        )
-        assertTrue(exception is UnexpectedReturnTypeError)
+                "}" becomes "" +
+                "func[num] f = (): num {\n" +
+                "num z = 5.0\n" +
+                "return z\n" +
+                "}\n"
+
+
     }
 
     @Test

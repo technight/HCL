@@ -19,6 +19,14 @@ var notIn = (T element, list[T] myList):bool{
 	element in myList not
 }
 
+var then = (bool b, func[T] s) : tuple[bool,T] {
+    (b,s)
+}
+
+var else = (tuple[bool,T] i, func[T] s) : T {
+    i element0 thenElse { (i element1) } { s }
+}
+
 # Get first index where predicate applies
 # Returns -1 if it doesn't apply to any element
 func firstIndexWhere = (list[T] lst, func[T, bool] predicate): num {
@@ -51,6 +59,10 @@ var forEachIndexed = (list[T] lst, func[T, num, none] f): none {
         index = index + 1
     }
 }
+
+var > = :greaterThan
+var < = :lessThan
+
 
 var is = (T l, T r): bool { l equals r }
 var isNot = (T l, T r): bool { l equals r not }
