@@ -42,7 +42,7 @@ In other words:
 This is because the above line is simply the result of 1 + 5 used as an argument to the function `*`, which is used as a argument to the function `equals`. This might seem weird, but as soon as you get used to deciding exactly what *you* want, it makes development less about majoring in math, and more about majoring in fun! 
 
 Brackets can still be used to control execution order, so it's not impossible to get the mathimatical answer. This would be done like this:
-`1 + (5 * 10) equals 50`
+`1 + (5 * 10) equals 51`
 This is because the result of 5 * 10 is now the secondary argument to the plus function!
 
 ## Types of HCL
